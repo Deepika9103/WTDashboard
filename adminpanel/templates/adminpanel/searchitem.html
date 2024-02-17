@@ -1,0 +1,93 @@
+<!-- project_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(event) {
+                event.preventDefault(); // Prevent the form from submitting traditionally
+
+                var formData = $(this).serialize(); // Serialize form data
+                var url = $(this).attr('action'); // Get form action URL
+
+                // Send AJAX request
+                $.get(url, formData, function(data) {
+                    $('#project-list').html(data); // Update project list
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Project List</h1>
+    <!-- action="{% url 'project-list' %}" -->
+    <form method="get">
+        <!-- <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date"> -->
+        <label for="">Project Name</label>
+        <input type="text" name="project_name">
+        <button type="submit" id="searchButton">Search</button>
+    </form>
+
+    <ul>
+        {% for project in projects %}
+            <li>{{ project.project_name }}</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+    //     document.getElementById('searchButton').addEventListener('click', function() {
+    //     var searchText = document.getElementById('searchInput').value;
+    //     var searchResult = document.getElementById('searchResult');
+        
+    //     // Check if the search input is not empty
+    //     if (searchText.trim() !== '') {
+    //         searchResult.textContent = 'You searched for: ' + searchText;
+    //     } else {
+    //         searchResult.textContent = 'Please enter a search term.';
+    //     }
+    // });
+
+
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     document.getElementById('searchButton').addEventListener('click', function() {
+    //         var searchDate = document.getElementById('searchInput').value;
+            
+    //         // Format the date to match "YYYY-MM-DD"
+    //         var formattedDate = formatDate(searchDate);
+            
+    //         // Send fetch request to server with the formatted date
+    //         fetch("http://127.0.0.1:8000/projects/?date=" + formattedDate, {
+    //             method: 'GET',
+    //             redirect: 'follow'
+    //         })
+    //         .then(response => response.text())
+    //         .then(result => {
+    //             // Display the response in the searchResult div
+    //             document.getElementById('searchResult').innerHTML = result;
+    //         })
+    //         .catch(error => {
+    //             console.error('Error:', error);
+    //         });
+    //     });
+        
+    //     // Function to format the date to "YYYY-MM-DD"
+    //     function formatDate(date) {
+    //         var d = new Date(date);
+    //         var year = d.getFullYear();
+    //         var month = ('0' + (d.getMonth() + 1)).slice(-2);
+    //         var day = ('0' + d.getDate()).slice(-2);
+    //         return year + '-' + month + '-' + day;
+    //     }
+    // });
+    </script>
+
+    
+</body>
+</html>

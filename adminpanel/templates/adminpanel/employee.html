@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .project-name {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .project-info {
+            font-size: 14px;
+        }
+        /* #button1, #button2 {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        } */
+    </style>
+</head>
+<body>
+    <h1> {{employee_name}} Dashboard</h1>
+    <ul>
+        {% for project in projects %}
+            <li>
+                <div class="project-name">{{ project.project_name }}</div>
+                <div class="project-info">
+                    <strong>Category:</strong> {{ project.category }}<br>
+                    <strong>Client:</strong> {{ project.client }}<br>
+                    <strong>Status:</strong> {{ project.status }}<br>
+                    <a href="{% url 'updateproject' project.id %}" id="button1">UPDATE</a>
+                    <a href="{% url 'deleteproject' project.id %}" id="button2">DELETE</a>
+                    <!-- Add other project details as needed -->
+                </div>
+            </li>
+        {% empty %}
+            <li>No projects found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

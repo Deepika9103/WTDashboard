@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project
+from .models import Project, Admin, Employee
 # Register your models here.
 
 
@@ -9,6 +9,10 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ('status', 'category', 'client')
     search_fields = ('project_name', 'client')
     date_hierarchy = 'start_date'
+
+admin.site.register(Admin)
+admin.site.register(Employee)
+
 
 # @admin.register(Employee)
 # class EmployeeAdmin(admin.ModelAdmin):

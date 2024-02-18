@@ -1,6 +1,14 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
+
+
+
+class Admin(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Project(models.Model):
@@ -11,9 +19,14 @@ class Project(models.Model):
         ('On Hold', 'On Hold'),
         ('Cancelled', 'Cancelled'),
     ]
+
+    CATEGORY_CHOICES = [
+        ('coding', 'Coding'),
+        ('graphics', 'Graphics'),
+    ]
     
     employee_name = models.CharField(max_length=100, blank=True, null=True)
-    category = models.CharField(max_length=100)
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     start_date = models.DateField()
     end_date = models.DateField()
     client = models.CharField(max_length=100)

@@ -112,6 +112,23 @@ def deleteproject(request, pk):
     return render(request, 'adminpanel/deleteproject.html',context)
 
 
+def department(request):
+    unique_categories = Project.objects.values_list('category', flat=True).distinct().order_by('category')
+    # Convert all categories to lowercase
+    unique_categories = [category.lower() for category in unique_categories]
+    return render(request, 'adminpanel/department.html', {'unique_categories': unique_categories})
+
+
+def projects_by_category(request, category):
+    projects = Project.objects.filter(category__iexact=category.lower())  # Case-insensitive filter
+    
+    context = {
+        'category': category,
+        'projects': projects
+    }
+    return render(request, 'adminpanel/projectcategory.html', context)
+
+
 def searchitem(request):
     # start_date = request.GET.get('start_date')
     # print(start_date)

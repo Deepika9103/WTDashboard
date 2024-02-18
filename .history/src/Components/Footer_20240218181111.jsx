@@ -5,7 +5,6 @@ import React from "react";
 import fbIcon from "../media/fbicon.png";
 import twitterIcon from "../media/twittericon.png";
 import linkedinIcon from "../media/linkedinicon.png";
-import logoImg from "../media/logo.jpeg";
 
 const Footer = () => {
   const CustomContainer = styled(Container)(({ theme }) => ({
@@ -46,8 +45,8 @@ const Footer = () => {
     <Box sx={{ py: 10 }}>
       <CustomContainer>
         <CustomContainer>
+        <NavbarLogo src={logoImg} alt="logo" />
           <Box>
-        {/* <NavbarLogo src={logoImg} alt="logo" /> */}
             <Typography
               sx={{
                 fontSize: "20px",

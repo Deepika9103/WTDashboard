@@ -162,7 +162,21 @@ const Hero = () => {
           </Button>
         </Slide>
   
-      
+        {isLargeScreen && (
+          <Slide in={typedText.includes(journeyText)} direction="right" timeout={1050}>
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: '#fff',
+                color: '#000',
+                ...secondButtonStyle,
+              }}
+            >
+              Watch Video
+            </Button>
+          </Slide>
+        )}
+        
       </div>
       </>
     );

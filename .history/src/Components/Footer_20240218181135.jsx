@@ -47,7 +47,7 @@ const Footer = () => {
       <CustomContainer>
         <CustomContainer>
           <Box>
-        {/* <NavbarLogo src={logoImg} alt="logo" /> */}
+        <NavbarLogo src={logoImg} alt="logo" />
             <Typography
               sx={{
                 fontSize: "20px",

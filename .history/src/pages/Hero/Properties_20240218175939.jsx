@@ -69,10 +69,10 @@ const Properties = () => {
             fontWeight: "bold",
           }}
         >
-          VFX 
+          VFX and 3D Animations
         </Typography>
         <StyledTypography sx={{ color: "#5A6473", fontSize: "16px", mt: 1 }}>
-          Transform your storytelling with our expertise in VFX and Animations. We bring narratives to life, creating immersive experiences through stunning visual effects and dynamic animations that captivate and engage your audience.
+          Transform your storytelling with our expertise in VFX and 3D Animations. We bring narratives to life, creating immersive experiences through stunning visual effects and dynamic animations that captivate and engage your audience.
         </StyledTypography>
       </Item>
     </Grid>
@@ -86,7 +86,7 @@ const Properties = () => {
             fontWeight: "bold",
           }}
         >
-          Trailer Campaigns
+          Trailer and Digital Campaigns
         </Typography>
         <StyledTypography sx={{ color: "#5A6473", fontSize: "16px", mt: 1 }}>
           Ignite excitement and anticipation with our Trailer and Digital Campaign services. We craft compelling trailers and execute strategic digital campaigns that elevate your brand, leaving a lasting impact on your audience.
@@ -103,7 +103,7 @@ const Properties = () => {
             fontWeight: "bold",
           }}
         >
-          Production 
+          Production and Design
         </Typography>
         <StyledTypography sx={{ color: "#5A6473", fontSize: "16px", mt: 1 }}>
           Unleash creativity and innovation with our Production and Design services. We offer end-to-end solutions, from conceptualization to execution, ensuring seamless production and captivating designs that set your brand apart.
@@ -137,7 +137,7 @@ const Properties = () => {
             fontWeight: "bold",
           }}
         >
-         3D Animations
+          Animation Services
         </Typography>
         <StyledTypography sx={{ color: "#5A6473", fontSize: "16px", mt: 1 }}>
           Immerse your audience in captivating narratives with our Animation Services. We specialize in creating dynamic and visually stunning animations that bring your ideas to life, leaving a lasting impression on your viewers.

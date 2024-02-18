@@ -86,7 +86,7 @@ const Properties = () => {
             fontWeight: "bold",
           }}
         >
-          Trailer Campaigns
+          Trailer and Digital Campaigns
         </Typography>
         <StyledTypography sx={{ color: "#5A6473", fontSize: "16px", mt: 1 }}>
           Ignite excitement and anticipation with our Trailer and Digital Campaign services. We craft compelling trailers and execute strategic digital campaigns that elevate your brand, leaving a lasting impact on your audience.

@@ -5,7 +5,6 @@ import React from "react";
 import fbIcon from "../media/fbicon.png";
 import twitterIcon from "../media/twittericon.png";
 import linkedinIcon from "../media/linkedinicon.png";
-import logoImg from "../media/logo.jpeg";
 
 const Footer = () => {
   const CustomContainer = styled(Container)(({ theme }) => ({
@@ -17,12 +16,7 @@ const Footer = () => {
       textAlign: "center",
     },
   }));
-  const NavbarLogo = styled("img")(({ theme }) => ({
-    cursor: "pointer",
-    [theme.breakpoints.down("md")]: {
-      display: "none",
-    },
-  }));
+
   const IconBox = styled(Box)(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -47,7 +41,6 @@ const Footer = () => {
       <CustomContainer>
         <CustomContainer>
           <Box>
-        {/* <NavbarLogo src={logoImg} alt="logo" /> */}
             <Typography
               sx={{
                 fontSize: "20px",
@@ -85,7 +78,8 @@ const Footer = () => {
             <FooterLink>Stories</FooterLink>
             <br />
             <FooterLink>Video</FooterLink>
-     
+            <br />
+            <FooterLink>Review Us</FooterLink>
           </Box>
 
           {/* <Box>

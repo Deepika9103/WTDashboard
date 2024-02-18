@@ -5,7 +5,6 @@ import React from "react";
 import fbIcon from "../media/fbicon.png";
 import twitterIcon from "../media/twittericon.png";
 import linkedinIcon from "../media/linkedinicon.png";
-import logoImg from "../media/logo.jpeg";
 
 const Footer = () => {
   const CustomContainer = styled(Container)(({ theme }) => ({
@@ -17,12 +16,7 @@ const Footer = () => {
       textAlign: "center",
     },
   }));
-  const NavbarLogo = styled("img")(({ theme }) => ({
-    cursor: "pointer",
-    [theme.breakpoints.down("md")]: {
-      display: "none",
-    },
-  }));
+
   const IconBox = styled(Box)(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -47,7 +41,6 @@ const Footer = () => {
       <CustomContainer>
         <CustomContainer>
           <Box>
-        {/* <NavbarLogo src={logoImg} alt="logo" /> */}
             <Typography
               sx={{
                 fontSize: "20px",
@@ -59,13 +52,13 @@ const Footer = () => {
               Products
             </Typography>
 
-            <FooterLink>Home</FooterLink>
+            <FooterLink>Listing</FooterLink>
             <br />
-            <FooterLink>Services</FooterLink>
+            <FooterLink>Properties</FooterLink>
             <br />
-            <FooterLink>Contact</FooterLink>
+            <FooterLink>Agents</FooterLink>
             <br />
-            {/* <FooterLink>Blog</FooterLink> */}
+            <FooterLink>Blog</FooterLink>
           </Box>
 
           <Box>
@@ -80,15 +73,16 @@ const Footer = () => {
               Resources
             </Typography>
 
-            <FooterLink>Our Work</FooterLink>
+            <FooterLink>Our Homes</FooterLink>
             <br />
             <FooterLink>Stories</FooterLink>
             <br />
             <FooterLink>Video</FooterLink>
-     
+            <br />
+            <FooterLink>Free Trial</FooterLink>
           </Box>
 
-          {/* <Box>
+          <Box>
             <Typography
               sx={{
                 fontSize: "20px",
@@ -107,7 +101,7 @@ const Footer = () => {
             <FooterLink>Privacy</FooterLink>
             <br />
             <FooterLink>Sitemap</FooterLink>
-          </Box> */}
+          </Box>
 
           <Box>
             <Typography

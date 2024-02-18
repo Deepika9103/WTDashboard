@@ -46,8 +46,8 @@ const Footer = () => {
     <Box sx={{ py: 10 }}>
       <CustomContainer>
         <CustomContainer>
+        <NavbarLogo src={logoImg} alt="logo" />
           <Box>
-        {/* <NavbarLogo src={logoImg} alt="logo" /> */}
             <Typography
               sx={{
                 fontSize: "20px",

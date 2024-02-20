@@ -23,12 +23,20 @@ urlpatterns = [
     path('projects/', views.project_list, name='project-list'), #django framework
     path('adminside/', views.adminside, name='adminside'),
     path('projects/<int:pk>/', views.project_detail, name='project-detail'), #django framework
-    path('searchitem/', views.searchitem, name='project-detail'),
+    # path('searchitem/', views.searchitem, name='project-detail'),
+
     path('createproject/', views.createproject, name='createproject'),
+    path('createapi/', views.createprojectapi, name='createprojectapi'),
+
     path('updateproject/<int:pk>', views.updateproject, name='updateproject'),
+    path('updateapi/<int:pk>', views.updateprojectapi, name='updateprojectapi'),
+
     path('deleteproject/<int:pk>', views.deleteproject, name='deleteproject'),
+    path('deleteapi/<int:pk>', views.deleteprojectapi, name='deleteprojectapi'),
+
     path('employeeside/',views.employeeside, name='employeeside'),
     path('department/', views.department, name='department'),
     path('projectcategory/<str:category>/', views.projects_by_category, name='projects_by_category'),
+    path('register/', views.register, name='register'),
     
 ]

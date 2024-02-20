@@ -7,9 +7,24 @@ from .serializers import ProjectSerializer
 from rest_framework import status
 from django.utils import timezone
 
-from .forms import ProjectForm
+from .forms import ProjectForm, CreateUserForm
+
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
+
+def register(request):
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {'form':form}
+    return render(request, 'adminpanel/register.html',context)
 
 def home(request):
     return render(request, 'adminpanel/home.html')
@@ -70,6 +85,7 @@ def project_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+#to create project 
 def createproject(request):
     form = ProjectForm()
     success_message = None
@@ -84,7 +100,18 @@ def createproject(request):
 
     return render(request, 'adminpanel/createproject.html',{'form' : form,'message':success_message})
 
+@api_view(['POST'])
+def createprojectapi(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.data)
+        if form.is_valid():
+            form.save()
+            return Response({'message': 'Your information has been saved in the database.'}, status=201)
+        else:
+            return Response({'error': 'Invalid data provided.'}, status=400)
 
+
+# @login_required(login_url ='/')
 def updateproject(request,pk):
 
     success_message = None
@@ -99,7 +126,22 @@ def updateproject(request,pk):
             return redirect('/')
     return render(request, 'adminpanel/updateproject.html',{'form':form, 'message':success_message})
 
+@api_view(['PUT'])
+def updateprojectapi(request, pk):
+    try:
+        project = Project.objects.get(id=pk)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    if request.method == 'PUT':
+        serializer = ProjectSerializer(project, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Project updated successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @login_required(login_url ='/')
 def deleteproject(request, pk):
     project = Project.objects.get(id=pk)
     if request.method == "POST":
@@ -111,7 +153,16 @@ def deleteproject(request, pk):
     }
     return render(request, 'adminpanel/deleteproject.html',context)
 
+@api_view(['DELETE'])
+def deleteprojectapi(request, pk):
+    project = get_object_or_404(Project, pk=pk)
 
+    if request.method == 'DELETE':
+        project.delete()
+        return Response({'message': 'Project deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# @login_required(login_url ='/')
 def department(request):
     unique_categories = Project.objects.values_list('category', flat=True).distinct().order_by('category')
     # Convert all categories to lowercase
@@ -119,6 +170,7 @@ def department(request):
     return render(request, 'adminpanel/department.html', {'unique_categories': unique_categories})
 
 
+# @login_required(login_url ='/')
 def projects_by_category(request, category):
     projects = Project.objects.filter(category__iexact=category.lower())  # Case-insensitive filter
     
@@ -128,31 +180,3 @@ def projects_by_category(request, category):
     }
     return render(request, 'adminpanel/projectcategory.html', context)
 
-
-def searchitem(request):
-    # start_date = request.GET.get('start_date')
-    # print(start_date)
-    # end_date = request.GET.get('end_date')
-    # print(end_date)
-    project_name = request.GET.get('project_name')
-    print(project_name)
-    print("helloooo")
-
-    projects = Project.objects.all()
-    print(projects)
-
-    # if start_date and end_date:
-    #     try:
-    #         start_date = timezone.make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
-    #         end_date = timezone.make_aware(datetime.strptime(end_date, '%Y-%m-%d'))
-    #         projects = projects.filter(start_date__gte=start_date, end_date__lte=end_date)
-    #     except ValueError:
-    #         pass
-
-    if project_name:
-        projects = projects.filter(project_name=project_name)
-        print(projects)
-    else:
-        pass
-
-    return render(request, 'adminpanel/searchitem.html', {'projects': projects})

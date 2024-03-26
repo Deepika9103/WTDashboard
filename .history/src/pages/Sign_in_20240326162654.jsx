@@ -19,108 +19,54 @@ const defaultTheme = createTheme();
 export default function SignIn() {
 
   const navigate = useNavigate();
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-  const searchData = {
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  };
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  });
+    const searchData = {
+      email: data.get('email'),
+      password: data.get('password'),
+      employee: employee 
 
-  fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(searchData),
-  })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Failed to authenticate');
     }
-    return response.json();
-  })
-  .then((data) => {
-    const token = data.token;
-    console.log(token);
-
-    localStorage.setItem('token', token);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Successfully Logged In',
-      showConfirmButton: false,
-      timer: 3000
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+      employee: employee
     });
 
-    navigate('/dashboard');
-  })
-  .catch((error) => {
-    console.error('Authentication error:', error);
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Authentication Failed',
-      text: 'Please check your credentials and try again.',
-    });
-  });
-};
+    fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(searchData),
+    }).then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.status == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully Logged In',
+            showConfirmButton: false,
+            timer: 3000
+          })
+          navigate('/dashboard')
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-
-  //   const searchData = {
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //     employee: employee 
-
-  //   }
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   employee: employee
-    // });
-
-  //   fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(searchData),
-  //   }).then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       if (data.status == true) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Successfully Logged In',
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //         navigate('/dashboard')
-  //       }
-  //       else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: data.message,
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.error(error);
-  //     });
-
-  // };
+  };
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: "40px",
     color: "#000336",
@@ -156,7 +102,7 @@ const handleSubmit = (event) => {
             Sign In
            </Title>
         <Typography component="h2" variant="h5" sx={{ fontSize: "18px" }}>
-          Empower Your Team's Creative Journey!
+          Sign in and help educate and empower!
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField

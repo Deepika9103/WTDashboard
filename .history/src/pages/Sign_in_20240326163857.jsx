@@ -49,7 +49,6 @@ const handleSubmit = (event) => {
   })
   .then((data) => {
     const token = data.token;
-    console.log(token);
 
     localStorage.setItem('token', token);
 

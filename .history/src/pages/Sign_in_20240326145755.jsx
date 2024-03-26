@@ -9,118 +9,66 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from "@mui/material";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-// import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { GoogleLogin } from '@react-oauth/google';
+
 const defaultTheme = createTheme();
 
 export default function SignIn() {
 
   const navigate = useNavigate();
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+const responseMessage = (response) => {
+    navigate('/dashboard')
 
-  const searchData = {
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  };
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  });
-
-  fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(searchData),
-  })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Failed to authenticate');
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const token = data.token;
-    console.log(token);
-
-    localStorage.setItem('token', token);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Successfully Logged In',
-      showConfirmButton: false,
-      timer: 3000
-    });
-
-    navigate('/dashboard');
-  })
-  .catch((error) => {
-    console.error('Authentication error:', error);
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Authentication Failed',
-      text: 'Please check your credentials and try again.',
-    });
-  });
+    console.log(response);
 };
+const errorMessage = (error) => {
+    console.log(error);
+};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
+    const searchData = {
+      email: data.get('email'),
+      password: data.get('password'),
+    }
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
 
-  //   const searchData = {
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //     employee: employee 
+    fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(searchData),
+    }).then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.status == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully Logged In',
+            showConfirmButton: false,
+            timer: 3000
+          })
+          navigate('/')
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
 
-  //   }
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   employee: employee
-    // });
-
-  //   fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(searchData),
-  //   }).then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       if (data.status == true) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Successfully Logged In',
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //         navigate('/dashboard')
-  //       }
-  //       else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: data.message,
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.error(error);
-  //     });
-
-  // };
+  };
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: "40px",
     color: "#000336",
@@ -131,12 +79,6 @@ const handleSubmit = (event) => {
       fontSize: "40px",
     },
   }));
-  const [employee, setEmployee] = React.useState('');
-
-  const handleChange = (event) => {
-    setEmployee(event.target.value);
-    // console.log(event.target.value);
-  };
 
 
   return (
@@ -156,7 +98,7 @@ const handleSubmit = (event) => {
             Sign In
            </Title>
         <Typography component="h2" variant="h5" sx={{ fontSize: "18px" }}>
-          Empower Your Team's Creative Journey!
+          Sign in and help educate and empower!
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -209,17 +151,10 @@ const handleSubmit = (event) => {
                
               }}
           />
-          <FormControl fullWidth>
-        <InputLabel >Select Employee Type</InputLabel>
-        <Select
-  value={employee}
-  label="Select Employee Type"
-  onChange={handleChange}
->
-  <MenuItem value="admin">Admin</MenuItem>
-  <MenuItem value="employee">Employee</MenuItem>
-</Select>
-      </FormControl>
+          {/* <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -266,11 +201,76 @@ const handleSubmit = (event) => {
     />
     Sign In with Google
   </Button> */}
+<GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
 </Box>
         </Box>
       </Box>
     </Container>
- 
+    <div style={{ marginTop: "2.5rem", marginBottom: "-1rem" }}>
+  <svg
+    style={{
+      position: 'relative',
+      width: '100%',
+      height: '21vh',
+    }}
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    viewBox="0 24 150 28"
+    preserveAspectRatio="none"
+    shapeRendering="auto"
+  >
+    <defs>
+      <path
+        id="gentle-wave"
+        d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+      />
+    </defs>
+    <g className="parallax">
+      <use xlinkHref="#gentle-wave" x="48" y="0" fill="rgba(255,165,0,0.7)" />
+      <use xlinkHref="#gentle-wave" x="48" y="3" fill="rgba(255,165,0,0.5)" />
+      <use xlinkHref="#gentle-wave" x="48" y="5" fill="rgba(255,165,0,0.3)" />
+      <use xlinkHref="#gentle-wave" x="48" y="7" fill="black" />
+    </g>
+  </svg>
+  <style>
+    {`
+      .parallax > use {
+        animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+      }
+      .parallax > use:nth-child(1) {
+        animation-delay: -2s;
+        animation-duration: 7s;
+      }
+      .parallax > use:nth-child(2) {
+        animation-delay: -3s;
+        animation-duration: 10s;
+      }
+      .parallax > use:nth-child(3) {
+        animation-delay: -4s;
+        animation-duration: 13s;
+      }
+      .parallax > use:nth-child(4) {
+        animation-delay: -5s;
+        animation-duration: 20s;
+      }
+      @keyframes move-forever {
+        0% {
+          transform: translate3d(-90px,0,0);
+        }
+        100% { 
+          transform: translate3d(85px,0,0);
+        }
+      }
+      @media (max-width: 768px) {
+        .waves {
+          height: 40px;
+          min-height: 40px;
+        }
+      }
+    `}
+  </style>
+</div>
+
 
     </ThemeProvider>
   );

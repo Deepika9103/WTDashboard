@@ -9,118 +9,64 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from "@mui/material";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-// import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 const defaultTheme = createTheme();
 
 export default function SignIn() {
 
   const navigate = useNavigate();
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+const responseMessage = (response) => {
+    navigate('/dashboard')
 
-  const searchData = {
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  };
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  });
-
-  fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(searchData),
-  })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Failed to authenticate');
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const token = data.token;
-    console.log(token);
-
-    localStorage.setItem('token', token);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Successfully Logged In',
-      showConfirmButton: false,
-      timer: 3000
-    });
-
-    navigate('/dashboard');
-  })
-  .catch((error) => {
-    console.error('Authentication error:', error);
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Authentication Failed',
-      text: 'Please check your credentials and try again.',
-    });
-  });
+    console.log(response);
 };
+const errorMessage = (error) => {
+    console.log(error);
+};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
+    const searchData = {
+      email: data.get('email'),
+      password: data.get('password'),
+    }
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
 
-  //   const searchData = {
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //     employee: employee 
+    fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(searchData),
+    }).then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.status == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully Logged In',
+            showConfirmButton: false,
+            timer: 3000
+          })
+          navigate('/dashboard')
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
 
-  //   }
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   employee: employee
-    // });
-
-  //   fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(searchData),
-  //   }).then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       if (data.status == true) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Successfully Logged In',
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //         navigate('/dashboard')
-  //       }
-  //       else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: data.message,
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.error(error);
-  //     });
-
-  // };
+  };
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: "40px",
     color: "#000336",
@@ -131,12 +77,6 @@ const handleSubmit = (event) => {
       fontSize: "40px",
     },
   }));
-  const [employee, setEmployee] = React.useState('');
-
-  const handleChange = (event) => {
-    setEmployee(event.target.value);
-    // console.log(event.target.value);
-  };
 
 
   return (
@@ -156,7 +96,7 @@ const handleSubmit = (event) => {
             Sign In
            </Title>
         <Typography component="h2" variant="h5" sx={{ fontSize: "18px" }}>
-          Empower Your Team's Creative Journey!
+          Sign in and help educate and empower!
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -209,17 +149,40 @@ const handleSubmit = (event) => {
                
               }}
           />
-          <FormControl fullWidth>
-        <InputLabel >Select Employee Type</InputLabel>
+        import * as React from 'react';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+export default function BasicSelect() {
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  return (
+    <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Age</InputLabel>
         <Select
-  value={employee}
-  label="Select Employee Type"
-  onChange={handleChange}
->
-  <MenuItem value="admin">Admin</MenuItem>
-  <MenuItem value="employee">Employee</MenuItem>
-</Select>
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Age"
+          onChange={handleChange}
+        >
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
       </FormControl>
+    </Box>
+  );
+}
+
           <Button
             type="submit"
             fullWidth

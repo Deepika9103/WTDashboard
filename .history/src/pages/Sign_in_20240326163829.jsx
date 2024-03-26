@@ -28,11 +28,6 @@ const handleSubmit = (event) => {
     password: data.get('password'),
     employee: employee
   };
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  });
 
   fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
     method: 'POST',
@@ -49,7 +44,6 @@ const handleSubmit = (event) => {
   })
   .then((data) => {
     const token = data.token;
-    console.log(token);
 
     localStorage.setItem('token', token);
 
@@ -83,11 +77,11 @@ const handleSubmit = (event) => {
   //     employee: employee 
 
   //   }
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   employee: employee
-    // });
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //     employee: employee
+  //   });
 
   //   fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
   //     method: 'POST',

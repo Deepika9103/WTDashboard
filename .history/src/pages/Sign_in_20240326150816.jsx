@@ -19,108 +19,60 @@ const defaultTheme = createTheme();
 export default function SignIn() {
 
   const navigate = useNavigate();
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+const responseMessage = (response) => {
+    navigate('/dashboard')
 
-  const searchData = {
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  };
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-    employee: employee
-  });
-
-  fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(searchData),
-  })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Failed to authenticate');
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const token = data.token;
-    console.log(token);
-
-    localStorage.setItem('token', token);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Successfully Logged In',
-      showConfirmButton: false,
-      timer: 3000
-    });
-
-    navigate('/dashboard');
-  })
-  .catch((error) => {
-    console.error('Authentication error:', error);
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Authentication Failed',
-      text: 'Please check your credentials and try again.',
-    });
-  });
+    console.log(response);
 };
+const errorMessage = (error) => {
+    console.log(error);
+};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
+    const searchData = {
+      email: data.get('email'),
+      password: data.get('password'),
 
-  //   const searchData = {
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //     employee: employee 
+    }
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
 
-  //   }
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   employee: employee
-    // });
+    fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(searchData),
+    }).then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.status == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully Logged In',
+            showConfirmButton: false,
+            timer: 3000
+          })
+          navigate('/dashboard')
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
 
-  //   fetch(`https://wixstocle.pythonanywhere.com/api/login/`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(searchData),
-  //   }).then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       if (data.status == true) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Successfully Logged In',
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //         navigate('/dashboard')
-  //       }
-  //       else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: data.message,
-  //           showConfirmButton: false,
-  //           timer: 3000
-  //         })
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.error(error);
-  //     });
-
-  // };
+  };
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: "40px",
     color: "#000336",
@@ -131,11 +83,10 @@ const handleSubmit = (event) => {
       fontSize: "40px",
     },
   }));
-  const [employee, setEmployee] = React.useState('');
+  const [age, setAge] = React.useState('');
 
   const handleChange = (event) => {
-    setEmployee(event.target.value);
-    // console.log(event.target.value);
+    setAge(event.target.value);
   };
 
 
@@ -156,7 +107,7 @@ const handleSubmit = (event) => {
             Sign In
            </Title>
         <Typography component="h2" variant="h5" sx={{ fontSize: "18px" }}>
-          Empower Your Team's Creative Journey!
+          Sign in and help educate and empower!
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -210,15 +161,18 @@ const handleSubmit = (event) => {
               }}
           />
           <FormControl fullWidth>
-        <InputLabel >Select Employee Type</InputLabel>
+        <InputLabel id="demo-simple-select-label">Select Employee Type</InputLabel>
         <Select
-  value={employee}
-  label="Select Employee Type"
-  onChange={handleChange}
->
-  <MenuItem value="admin">Admin</MenuItem>
-  <MenuItem value="employee">Employee</MenuItem>
-</Select>
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Select Employee Type"
+          onChange={handleChange}
+        >
+          <MenuItem value={1}>Admin</MenuItem>
+          <MenuItem value={2}>Employee</MenuItem>
+          {/* <MenuItem value={30}>Thirty</MenuItem> */}
+        </Select>
       </FormControl>
           <Button
             type="submit"
